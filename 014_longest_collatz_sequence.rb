@@ -18,8 +18,8 @@
 #
 # NOTE: Once the chain starts the terms are allowed to go above one million.
 
-def longest_collatz_sequence(count)
-  result = {}
+def longest_collatz_sequence1(count)
+  check = []
   while count >= 1
     n = count
     seq = [count]
@@ -28,17 +28,17 @@ def longest_collatz_sequence(count)
       seq << n
     end
     count -= 1
-    value = seq_compare(seq,result)
+    check << seq
+    value = sequence_check(check) if check.length == 2
   end
-  puts "The number that produces the largest chain is: #{value[value.keys[0]][0]}"
+  puts "The number that produces the largest chain is: #{value[0][0]}"
 end
 
-def seq_compare(seq,res)
-  res[seq.length] = seq
-  if res.length == 2
-    res.keys[0] > res.keys[1] ? res.delete(res.keys[1]) : res.delete(res.keys[0])
-  end
-  res
+def sequence_check(check)
+  check[0].length > check[1].length ? check.delete_at(1) : check.delete_at(0)
+  check
 end
 
-longest_collatz_sequence 1000000
+s = Time.new
+longest_collatz_sequence1 1000000
+puts "elapsed: #{Time.new-s}"
